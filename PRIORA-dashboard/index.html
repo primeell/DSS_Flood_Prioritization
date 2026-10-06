@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f7fb">
+  <meta name="description" content="PRIORA membantu menyusun prioritas kesiapsiagaan banjir kabupaten/kota secara transparan.">
+  <title>PRIORA — Prioritas Kesiapsiagaan Banjir</title>
+  <link rel="stylesheet" href="styles.css?v=6">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Lewati ke konten utama</a>
+
+  <div class="loading-screen" id="loading-screen" role="status" aria-live="polite">
+    <div class="loading-mark" aria-hidden="true">P</div>
+    <div><strong>Menyiapkan PRIORA</strong><span>Memuat data 514 kabupaten/kota dan peta lokal…</span></div>
+  </div>
+
+  <header class="app-header">
+    <a class="brand" href="#main-content" aria-label="PRIORA, kembali ke ringkasan nasional">
+      <span class="brand-mark" aria-hidden="true">P</span>
+      <span class="brand-copy"><strong>PRIORA</strong><small>Flood Readiness Intelligence</small></span>
+    </a>
+    <nav class="header-nav" aria-label="Navigasi utama">
+      <a class="nav-link active" href="#main-content">Overview</a>
+      <a class="nav-link" href="#map-section">Peta Prioritas</a>
+      <a class="nav-link" href="#table-section">Peringkat</a>
+      <a class="nav-link" href="#methodology-section">Metodologi</a>
+    </nav>
+  </header>
+
+  <main id="main-content" class="main-content" tabindex="-1">
+    <h1 class="sr-only">PRIORA Dashboard Prioritas Kesiapsiagaan Banjir</h1>
+    <section class="kpi-grid" aria-label="Indikator keputusan utama">
+      <article class="kpi-card kpi-red"><span class="kpi-label">Prioritas Utama</span><strong id="kpi-priority">—</strong><p>Wilayah dengan kebutuhan kesiapsiagaan tertinggi</p></article>
+      <article class="kpi-card kpi-orange"><span class="kpi-label">Perlu Perhatian</span><strong id="kpi-screened">—</strong><p>Wilayah yang melewati ambang pemantauan risiko</p></article>
+      <article class="kpi-card kpi-cyan"><span class="kpi-label">Peringkat Nasional #1</span><strong id="kpi-top-region" class="kpi-name">—</strong><p id="kpi-top-region-province">Menunggu kalkulasi sistem</p></article>
+      <article class="kpi-card kpi-blue"><span class="kpi-label">Cakupan Nasional</span><strong id="kpi-total">514</strong><p>Kabupaten/kota dalam sistem pemantauan</p></article>
+    </section>
+
+    <section class="workspace-toolbar" aria-label="Kontrol eksplorasi wilayah">
+      <div class="workspace-label"><span class="workspace-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg></span><div><strong>Eksplorasi Wilayah</strong><span>Telusuri profil prioritas nasional</span></div></div>
+      <div class="filter-grid">
+        <label class="field"><span>Cakupan wilayah</span><select id="select-province"><option value="ALL">Seluruh Indonesia</option></select></label>
+        <label class="field field-search"><span>Pencarian wilayah</span><span class="input-with-icon">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <input id="input-search" type="search" placeholder="Cari kabupaten atau kota" autocomplete="off">
+        </span></label>
+      </div>
+    </section>
+
+    <section class="overview-grid">
+      <article class="card map-card" id="map-section" aria-labelledby="map-title">
+        <div class="card-heading">
+          <div><p class="section-kicker">Cakupan spasial</p><h2 id="map-title">Peta prioritas kesiapsiagaan nasional</h2></div>
+          <div class="map-legend" aria-label="Legenda peta">
+            <span><i class="legend-swatch priority"></i>Prioritas intervensi</span>
+            <span><i class="legend-swatch screened"></i>Lolos screening</span>
+            <span><i class="legend-swatch monitored"></i>Pemantauan rutin</span>
+          </div>
+        </div>
+        <div class="map-stage" id="map-stage">
+          <svg id="map-svg" class="indonesia-map" viewBox="0 0 1000 390" role="img" aria-labelledby="map-title map-description">
+            <desc id="map-description">Peta kabupaten dan kota Indonesia yang diwarnai berdasarkan status prioritas kesiapsiagaan banjir.</desc><g id="map-layer"></g>
+          </svg>
+          <div class="map-tooltip" id="map-tooltip" role="status" aria-live="polite"></div>
+          <div class="map-empty" id="map-empty">Menyiapkan geometri peta…</div>
+        </div>
+        <div class="map-selection" id="map-selection" aria-live="polite">
+          <div><span>Wilayah yang dipilih</span><strong id="selected-region-name">Pilih wilayah pada peta</strong></div>
+          <p id="selected-region-reason">Klik wilayah untuk melihat alasan prioritas dan profil indikatornya.</p>
+          <button class="text-button" id="btn-selected-detail" type="button" disabled>Lihat detail wilayah <span aria-hidden="true">→</span></button>
+        </div>
+      </article>
+
+      <article class="card ranking-card" id="ranking-section" aria-labelledby="ranking-title">
+        <div class="card-heading">
+          <div><p class="section-kicker">Fokus intervensi</p><h2 id="ranking-title">10 prioritas nasional</h2></div>
+          <span class="ranking-badge">PRIORA INDEX</span>
+        </div>
+        <p class="card-description">Skor menunjukkan kedekatan TOPSIS. Mini-bar memperlihatkan profil indikator dan bukan penjumlahan skor.</p>
+        <ol id="top-priority-list" class="priority-list" aria-label="Sepuluh wilayah prioritas utama"></ol>
+      </article>
+    </section>
+
+    <section class="card policy-explainer" aria-labelledby="policy-title">
+      <div class="policy-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3 3 7v5c0 5 3.6 8.2 9 9 5.4-.8 9-4 9-9V7zM8 12l2.5 2.5L16 9"/></svg></div>
+      <div><h2 id="policy-title">Prediksi dan prioritas adalah dua keputusan berbeda</h2><p>Model memperkirakan potensi <em>laporan</em> banjir mendatang. Setelah melewati penyaringan hazard, TOPSIS menyusun prioritas berdasarkan ancaman, kerentanan, dan kapasitas daerah. PRIORA tidak menyatakan banjir pasti terjadi dan tidak menggantikan keputusan BPBD.</p></div>
+    </section>
+
+    <section class="card table-card" id="table-section" aria-labelledby="table-title">
+      <div class="card-heading table-heading">
+        <div><p class="section-kicker">Transparansi ranking</p><h2 id="table-title">Daftar wilayah</h2><p class="table-helper">Klik judul kolom untuk mengurutkan data.</p></div>
+        <div class="status-filters" role="group" aria-label="Filter status wilayah">
+          <button type="button" class="filter-chip active" data-status="ALL" aria-pressed="true">Semua</button>
+          <button type="button" class="filter-chip" data-status="priority" aria-pressed="false">Prioritas</button>
+          <button type="button" class="filter-chip" data-status="screened_in" aria-pressed="false">Lolos screening</button>
+          <button type="button" class="filter-chip" data-status="screened_out" aria-pressed="false">Pemantauan</button>
+        </div>
+      </div>
+      <div class="mobile-sort-controls" aria-label="Pengurutan tabel untuk layar kecil">
+        <label class="field"><span>Urutkan berdasarkan</span><select id="mobile-sort-key">
+          <option value="rank">Peringkat</option><option value="district">Wilayah</option><option value="hazard">Peluang banjir</option><option value="vulnerability">Kerentanan</option><option value="capacity">Kapasitas</option><option value="score">Skor prioritas</option><option value="status">Status</option>
+        </select></label>
+        <button class="sort-direction-button" id="mobile-sort-direction" type="button" aria-label="Ubah arah pengurutan menjadi menurun">Naik <span aria-hidden="true">↑</span></button>
+      </div>
+      <div class="table-responsive"><table class="data-table">
+        <thead><tr>
+          <th scope="col" aria-sort="ascending"><button class="sort-button active" type="button" data-sort="rank">Peringkat <span aria-hidden="true">↑</span></button></th>
+          <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-sort="district">Wilayah <span aria-hidden="true">↕</span></button></th>
+          <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-sort="hazard">Peluang banjir <span aria-hidden="true">↕</span></button></th>
+          <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-sort="vulnerability">Kerentanan <span aria-hidden="true">↕</span></button></th>
+          <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-sort="capacity">Kapasitas <span aria-hidden="true">↕</span></button></th>
+          <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-sort="score">Skor prioritas <span aria-hidden="true">↕</span></button></th>
+          <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-sort="status">Status <span aria-hidden="true">↕</span></button></th>
+          <th scope="col"><span class="sr-only">Aksi</span></th>
+        </tr></thead>
+        <tbody id="table-body"><tr><td colspan="8" class="empty-cell">Memuat data PRIORA…</td></tr></tbody>
+      </table></div>
+      <div class="pagination"><p id="table-count">Memuat wilayah…</p><div>
+        <button class="icon-button" id="btn-prev-page" type="button" aria-label="Halaman sebelumnya" disabled><span aria-hidden="true">←</span></button>
+        <span id="page-indicator">Halaman 1 dari 1</span>
+        <button class="icon-button" id="btn-next-page" type="button" aria-label="Halaman berikutnya" disabled><span aria-hidden="true">→</span></button>
+      </div></div>
+    </section>
+
+    <details class="card methodology" id="methodology-section"><summary>Metodologi, sumber data, dan batasan</summary><div class="method-grid">
+      <div><strong>Hazard</strong><p>XGBoost terkalibrasi menggunakan CHIRPS dan riwayat laporan BNPB.</p></div>
+      <div><strong>Kerentanan</strong><p>Profil sosial-ekonomi daerah dari indikator kemiskinan dan PDRB per kapita.</p></div>
+      <div><strong>Kapasitas</strong><p>Indeks Ketahanan Daerah BNPB, diperlakukan sebagai kriteria biaya dalam TOPSIS.</p></div>
+      <div><strong>Batasan</strong><p>Target adalah kejadian banjir yang dilaporkan. Kode wilayah digunakan sebagai kunci boundary legacy, bukan kode administrasi resmi terkini.</p></div>
+    </div></details>
+  </main>
+
+  <div class="modal-overlay" id="modal-region" aria-hidden="true">
+    <section class="region-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-reason">
+      <button class="modal-close icon-button" id="btn-close-modal" type="button" aria-label="Tutup detail wilayah">×</button>
+      <p class="section-kicker" id="modal-status-kicker">Detail wilayah</p><h2 id="modal-title">—</h2><p class="modal-subtitle" id="modal-subtitle">—</p>
+      <div class="modal-decision"><div><span>Peringkat nasional</span><strong id="modal-rank">—</strong></div><div><span>Skor prioritas</span><strong id="modal-score">—</strong></div><div><span>Peluang laporan banjir</span><strong id="modal-h">—</strong></div></div>
+      <div class="reason-box"><span>Mengapa wilayah ini diprioritaskan?</span><p id="modal-reason">—</p></div>
+      <div class="profile-grid">
+        <div class="profile-item"><span>Kerentanan</span><strong id="modal-v">—</strong><div class="metric-track"><i id="modal-v-bar"></i></div></div>
+        <div class="profile-item"><span>Kapasitas daerah</span><strong id="modal-c">—</strong><div class="metric-track"><i id="modal-c-bar"></i></div></div>
+        <div class="profile-item"><span>Kemiskinan BPS</span><strong id="modal-pov">—</strong></div><div class="profile-item"><span>PDRB per kapita</span><strong id="modal-pdrb">—</strong></div>
+        <div class="profile-item"><span>IKD BNPB</span><strong id="modal-ikd">—</strong></div><div class="profile-item"><span>Status penyaringan</span><strong id="modal-screening-status">—</strong></div>
+      </div>
+      <div class="trend-block"><div><span>Tren peluang historis</span><strong id="trend-caption">—</strong></div><svg id="trend-chart" viewBox="0 0 560 100" role="img" aria-label="Tren historis peluang laporan banjir"></svg></div>
+      <div class="action-note"><strong>Langkah kesiapsiagaan yang dapat dipertimbangkan</strong><p id="modal-action">Verifikasi kondisi lapangan dan koordinasikan kesiapan sumber daya dengan BPBD setempat.</p></div>
+      <p class="legacy-note" id="modal-legacy">Kode wilayah digunakan sebagai kunci join boundary legacy.</p>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js?v=6"></script>
+</body>
+</html>
