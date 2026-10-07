@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f4f7fb">
   <meta name="description" content="PRIORA membantu menyusun prioritas kesiapsiagaan banjir kabupaten/kota secara transparan.">
   <title>PRIORA — Prioritas Kesiapsiagaan Banjir</title>
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Lewati ke konten utama</a>
@@ -79,7 +79,10 @@
           <span class="ranking-badge">PRIORA INDEX</span>
         </div>
         <p class="card-description">Skor menunjukkan kedekatan TOPSIS. Mini-bar memperlihatkan profil indikator dan bukan penjumlahan skor.</p>
-        <ol id="top-priority-list" class="priority-list" aria-label="Sepuluh wilayah prioritas utama"></ol>
+        <p class="priority-scroll-hint" id="priority-scroll-hint"><span aria-hidden="true">↓</span> Gulir daftar untuk melihat seluruh 10 wilayah</p>
+        <div class="priority-list-scroll" tabindex="0" role="region" aria-label="Daftar 10 prioritas nasional" aria-describedby="priority-scroll-hint">
+          <ol id="top-priority-list" class="priority-list" aria-label="Sepuluh wilayah prioritas utama"></ol>
+        </div>
       </article>
     </section>
 
